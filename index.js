@@ -1,13 +1,48 @@
-/* Your Code Here */
-
-/*
- We're giving you this function. Take a look at it, you might see some usage
- that's new and different. That's because we're avoiding a well-known, but
- sneaky bug that we'll cover in the next few lessons!
-
- As a result, the lessons for this function will pass *and* it will be available
- for you to use if you need it!
- */
+function createEmployeeRecord(array){
+    let empRecord = {}
+    empRecord.firstName = array[0]
+    empRecord.familyName = array[1]
+    empRecord.title = array[2]
+    empRecord.payPerHour = array[3]
+    empRecord.timeInEvents = []
+    empRecord.timeOutEvents = []
+    return empRecord
+  }
+  
+  function createEmployeeRecords(array){
+    return array.map((person) => createEmployeeRecord(person))
+  }
+  
+  function createTimeInEvent(timeStamp){
+    let event = {}
+    let [date,time] = timeStamp.split(" ")
+    event.type = "TimeIn"
+    event.hour = parseInt(time)
+    event.date = date
+    this.timeInEvents.push(event)
+    return this
+  }
+  
+  function createTimeOutEvent(timeStamp){
+    let event = {}
+    let [date,time] = timeStamp.split(" ")
+    event.type = "TimeOut"
+    event.hour = parseInt(time)
+    event.date = date
+    this.timeOutEvents.push(event)
+    return this
+  }
+  
+  function hoursWorkedOnDate(date){
+    let timeOut = this.timeOutEvents.find((event) => event.date === date).hour
+    let timeIn = this.timeInEvents.find((event) => event.date === date).hour
+    return (timeOut - timeIn) / 100
+  }
+  
+  function wagesEarnedOnDate(date){
+    let payRate = this.payPerHour
+    return hoursWorkedOnDate.call(this,date) * payRate
+  }
 
 let allWagesFor = function () {
     let eligibleDates = this.timeInEvents.map(function (e) {
@@ -20,3 +55,11 @@ let allWagesFor = function () {
 
     return payable
 }
+
+function findEmployeeByFirstName(records,firstName){
+    return records.find((record) => record.firstName === firstName)
+  }
+  
+  function calculatePayroll(records){
+    return records.reduce((sum,record) => sum + allWagesFor.call(record),0)
+  }
